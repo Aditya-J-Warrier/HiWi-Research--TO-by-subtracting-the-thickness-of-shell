@@ -8,6 +8,13 @@ Main changes:
 - Minor build adjustments for Ubuntu/WSL (LAPACK/BLAS linking, disabled unused features).
 - All modifications are kept minimal so standard CalculiX workflows still work.
 
+⚠️Note on Repository Content: To maintain a clean research focus and stay within GitHub's display limits, this repository contains only the modified source files and analysis tools. The rest of the original CalculiX files remain the same. 
+If one wants to run this modified version, simply download the standard CalculiX 2.23 source, replace the original files with the ones provided here (specifically mafillsm.f), and recompile.
+
+📁 Key Modifications
+mafillsm.f: The primary modification. This file contains the custom implementation that exports the assembled global stiffness matrix (K) to Kglobal.dat during the assembly phase.
+Build Adjustments: Minor modifications for LAPACK/BLAS linking specifically for Ubuntu/WSL environments.
+
 ---
 
 ## Build on Ubuntu / WSL
@@ -103,3 +110,4 @@ This script can be later used to:
 - Compare eigenvalues for different geometries (e.g. varying beam height).
 - Compare ccx results to analytical beam stiffness/eigenvalues.
 - Visualize K’s sparsity pattern or eigenvectors.
+
