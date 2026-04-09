@@ -79,29 +79,7 @@
      &     pslavsurf(3,*),pmastsurf(6,*),smscale(*),aut(*),val,
      &     aute(96)
 
-      integer unitK
-      logical firstcall
-      save firstcall, unitK
-      data firstcall /.true./
-      data unitK /99/
 
-!     
-      kflag=2
-      i0=0
-      icalccg=0
-
-      if (firstcall) then
-         open(unitK,file='Kglobal_unreduced.dat',status='unknown')
-         firstcall = .false.
-      endif
-
-
-c     write(*,*) loc(kflag)
-c     write(*,*) loc(s)
-c     write(*,*) loc(sm)
-c     write(*,*) loc(ff)
-c     write(*,*) loc(index1)
-!     
       if((stiffness.eq.1).and.(mass(1).eq.0).and.(buckling.eq.0)) then
         stiffonly(1)=1
       else
@@ -391,18 +369,6 @@ c              write(*,*) 'mafillsm ',node1,k,node2,m,jj,ll
               node2=kon(indexe+l)
               jdof2=nactdof(m,node2)
 
-c --- your full DOF mapping (unconstrained numbering) ---
-              fulldof1 = (node1-1)*ndof + k
-              fulldof2 = (node2-1)*ndof + m
-
-c --- always export raw, unconstrained K (symmetric storage) ---
-              if (fulldof1 .le. fulldof2) then
-                write(unitK,'(2I10,1X,E20.12)') fulldof1, fulldof2,
-     &                                         s(jj,ll)
-              else
-                write(unitK,'(2I10,1X,E20.12)') fulldof2, fulldof1,
-     &                                         s(jj,ll)
-              endif
 
 c --- original ccx logic for reduced matrix (unchanged) ---
 c     check whether one of the DOF belongs to a SPC or MPC
@@ -910,7 +876,15 @@ c --- original continuation with rhsi / distributed forces comes next ---
       endif
 !     
 
-
+c --- Exporting the FINAL assembled matrix with MPCs ---
+      open(unit=99,file='K_final.mtx',status='unknown')
+      do i=1,neq(1)
+         write(99,'(2I10,1X,E20.12)') i,i,ad(i)
+         do j=jq(i),jq(i+1)-1
+            write(99,'(2I10,1X,E20.12)') i,irow(j),au(j)
+         end do
+      end do
+      close(99)
 
       return
       end
