@@ -161,7 +161,7 @@
 !     
               if(lakon(i)(1:2).ne.'CA') then
                 if(thicke(1,indexe+j).lt.-0.5d0) then
-                  if(thickn(1,node).le.0.d0) then
+                  if(thickn(1,node).eq.0.d0) then
                     write(*,*) '*ERROR in gen3delem:'
                     write(*,*) 
      &                   '       first thickness in node',node
@@ -173,7 +173,7 @@
                 endif
                 if(mi(3).gt.1) then
                   if(thicke(2,indexe+j).lt.-0.5d0) then
-                    if(thickn(2,node).le.0.d0) then
+                    if(thickn(2,node).eq.0.d0) then
                       write(*,*) '*ERROR in gen3delem:'
                       write(*,*) 
      &                     '       second thickness in node',node
@@ -185,7 +185,7 @@
                   endif
                 endif
               endif
-              if(thicke(1,indexe+j).le.0.d0) then
+              if(thicke(1,indexe+j).eq.0.d0) then
                 if(lakon(i)(1:1).eq.'C') then
 !     
 !     default for plane stress and plane strain elements
@@ -199,7 +199,7 @@
                 endif
               endif
               if((lakon(i)(1:1).eq.'B').and.
-     &             (thicke(2,indexe+j).le.0.d0)) then
+     &             (thicke(2,indexe+j).eq.0.d0)) then
                 write(*,*) '*ERROR in gen3delem: second thickness'
                 write(*,*)'       in node ',j,' of beam element ',i
                 write(*,*)'       is zero'

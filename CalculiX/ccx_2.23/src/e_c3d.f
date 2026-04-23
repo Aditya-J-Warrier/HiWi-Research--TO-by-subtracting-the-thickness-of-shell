@@ -711,18 +711,17 @@ c     mortar start
         endif
 c     mortar end
 !     
-!     check the jacobian determinant
-!     
-        if(xsj.lt.1.d-20) then
-          write(*,*) '*ERROR in e_c3d: nonpositive jacobian'
-          write(*,*) '       determinant in element',nelem
-          write(*,*)
-          xsj=dabs(xsj)
-          nmethod=0
+!      check the jacobian determinant
+!      
+        if(dabs(xsj).lt.1.d-20) then
+!         We force a tiny value only if it's exactly zero to prevent NaNs
+          xsj = 1.d-15
         endif
-!     
+
+!       xsj=dabs(xsj)  <-- This remains GONE so our stiffness stays negative
+!      
         if(((iperturb(1).eq.1).or.(iperturb(2).eq.1)).and.
-     &       (stiffness.eq.1).and.(buckling.eq.0)) then
+     &     (stiffness.eq.1).and.(buckling.eq.0)) then
 !     
 !     stresses for 2nd order static and modal theory
 !     

@@ -164,7 +164,7 @@ c     endif
      &           "*SHELL SECTION%",ier)
             return
           endif
-          if(thickness.le.0.d0) then
+          if(thickness.eq.0.d0) then
             write(*,*) 
      &       '*ERROR reading *SHELL SECTION: shell thickness is zero'
             write(*,*) '       or negative'
